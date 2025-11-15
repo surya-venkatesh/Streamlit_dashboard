@@ -126,7 +126,7 @@ with tab1:
     client_data=list()
     
     for j in range(num_houses):
-        print(j)
+        #print(j)
         #name=str(client_names[j])
         name=df.loc[df['dataid']==data_id[j]]
         name=name.drop(['dataid'], axis=1)
@@ -141,6 +141,7 @@ with tab1:
         client_data.append(name)    
     #print(client_data)
     cl_num = st.number_input("Select a house (1-"+str(num_houses)+")",value=1)
+    cl_num=cl_num-1
     st.dataframe(client_data[cl_num])
 
 with tab2:
@@ -238,3 +239,65 @@ with tab2:
 
     min_max_avg(client_data[cl_num])
     weekday_weekend(client_data[cl_num])
+
+
+with tab3:
+    #forecasting
+    #arima
+    from sklearn.metrics import mean_squared_error,mean_absolute_percentage_error,mean_absolute_error
+    from statsmodels.tsa.arima.model import ARIMA
+    from statsmodels.graphics.tsaplots import plot_predict
+    st.subheader("Forecasting")
+    import warnings
+    import itertools
+
+    warnings.filterwarnings('ignore')
+
+    def arima(temp_df):
+          
+        temp_df=temp_df.set_index('localminute')
+        temp_df=temp_df.resample('D').sum()    
+        cons_series=temp_df['total_consumption']
+        train_data=np.array(cons_series[0:100])    
+        test_data=np.array(cons_series[100:110])
+        p = range(0, 4)
+        d = range(0, 3)
+        q = range(0, 4)
+        pdq = list(itertools.product(p, d, q))
+        
+        best_aic = np.inf
+        best_order = None
+        best_model = None
+        
+        for order in pdq:
+            try:
+                model = ARIMA(train_data, order=order)
+                model_fit = model.fit(method_kwargs={'maxiter':300})
+                if model_fit.aic < best_aic:
+                    best_aic = model_fit.aic
+                    best_order = order
+                    best_model = model_fit
+            except:
+                continue
+        
+        st.write(f'Best ARIMA order: {best_order} with AIC: {best_aic}')
+        #model = ARIMA(train_data, order=(4,2,2))
+        #model_fit = model.fit(method_kwargs={'maxiter':300}) 
+        #print(model_fit.summary())
+        forecast=model_fit.forecast(10)    
+        fig, ax = plt.subplots()
+        x = range(1, len(forecast) + 1)
+        ax.plot(x,forecast,label="Prediction")
+        ax.plot(x,test_data,label="Actual")
+        plt.xlabel('Day of the week')
+        plt.ylabel('Total Consumption (kWh)')
+        plt.legend()        
+        st.pyplot(fig)
+        mse=mean_squared_error(test_data,forecast)
+        mae=mean_absolute_error(test_data,forecast)
+        mape=mean_absolute_percentage_error(test_data,forecast)
+        st.write('Mean squared error:',mse)
+        st.write('Mean absolute error:',mae)
+        st.write('Mean absolute percentage error:',mape)
+        
+    arima(client_data[cl_num])

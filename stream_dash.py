@@ -13,7 +13,7 @@ from scipy import stats
 
 st.title('Dashboard of the assignment i created for student')
 tab1, tab2, tab3 = st.tabs(["Summary", "Consumption data", "forecasting"])
-temp_df=pd.read_csv (r'C:\Users\suryavp\.spyder-py3\15minute_data_austin.csv',sep=';')
+temp_df=pd.read_csv("15minute_data_austin.csv", sep=";")
 #st.dataframe(temp_df)
 #st.write(temp_df.columns)
 with tab1:

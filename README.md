@@ -40,4 +40,9 @@ The app may feel slow because all data processing, analysis, and model training 
 ## Dashboard Preview
 
 Screenshots of the Streamlit dashboard are provided below.
+![pic_1](https://github.com/surya-venkatesh/Streamlit_dashboard/blob/main/Dashboard_screenshots/pic_1.png)
+![pic_2](https://github.com/surya-venkatesh/Streamlit_dashboard/blob/main/Dashboard_screenshots/pic_2.png)
+![pic_3](https://github.com/surya-venkatesh/Streamlit_dashboard/blob/main/Dashboard_screenshots/pic_3.png)
+![pic_4](https://github.com/surya-venkatesh/Streamlit_dashboard/blob/main/Dashboard_screenshots/pic_4.png)
+![pic_5](https://github.com/surya-venkatesh/Streamlit_dashboard/blob/main/Dashboard_screenshots/pic_5.png)
  

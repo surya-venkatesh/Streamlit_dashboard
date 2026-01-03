@@ -280,7 +280,7 @@ with tab3:
     #forecasting
         
     st.subheader("Forecasting")
-    st.write('ARIMA model is developed to predict the next day consumption')
+    st.write('ARIMA model is developed to predict the next 10 days consumption')
     warnings.filterwarnings('ignore')
     #Function to create best arima model by optimizing the arima parameters
     def arima(temp_df):
@@ -312,7 +312,7 @@ with tab3:
         
         st.write(f'Best ARIMA order: {best_order} with AIC: {best_aic}')
         
-        forecast=model_fit.forecast(10)    
+        forecast=best_model.forecast(10)    
         fig, ax = plt.subplots()
         x = range(1, len(forecast) + 1)
         ax.plot(x,forecast,label="Prediction")
